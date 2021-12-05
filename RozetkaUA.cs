@@ -19,7 +19,29 @@ namespace Task2RozetkaUA
             }
             return driver.FindElement(by);
         }
-
+        public static bool elexists(By by, IWebDriver driver)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
+        public static void waitforelement(IWebDriver driver, By by)
+        {
+            for (int i = 0; i < 30; i++)
+            {
+                Thread.Sleep(1000);
+                if (elexists(by, driver))
+                {
+                    break;
+                }
+            }
+        }
 
         //public static ReadOnlyCollection<IWebElement> FindElements(this IWebDriver driver, By by, int timeoutInSeconds)
         //{
@@ -31,11 +53,10 @@ namespace Task2RozetkaUA
         //    return driver.FindElements(by);
         //}
     }
-    public static class MyAssertClass
+    public static class MyAssert
     {
-        public static bool MyAreEqualMethod(int first, string second)
-        {
-            
+        public static bool MyIsTrue(int first, string second)
+        {            
             string numericString = "";
             foreach (char c in second)
             {
@@ -44,12 +65,9 @@ namespace Task2RozetkaUA
                 {
                     numericString = String.Concat(numericString, c);
                 }
-                else
-                {
-                    break;
-                }
+                else  
+                    break;                
             }
-           
             if (first < Convert.ToInt32(numericString)) 
             {
                 return true;
@@ -58,6 +76,7 @@ namespace Task2RozetkaUA
                 return false;
         }
     }
+    
     public class Tests
     {
         private IWebDriver driver;
@@ -96,39 +115,40 @@ namespace Task2RozetkaUA
             driver.FindElement(_buttonBrendProduct,60).Click();
             driver.FindElement(_buttonChoiceByPrice,20).Click();
             driver.FindElement(_buttonChoiceByPriceExpensive).Click();
-            Assert.IsTrue(driver.FindElement(aaa,300).Enabled);
-            Thread.Sleep(600);
-            driver.FindElement(_buttonIconAddProductBay,30).Click();
+            WebDriverExtensions.waitforelement(driver, aaa);
+            var addProductBay = driver.FindElement(_buttonIconAddProductBay,30);
+            addProductBay.Click();
 
             driver.FindElement(_buttonFastMenu).Click();
             driver.FindElement(_buttonListFastMenu, 20).Click();
             driver.FindElement(_buttonIconSecondListProduct, 80).Click();
             driver.FindElement(_buttonBrendProduct, 20).Click();
             driver.FindElement(_buttonChoiceByPrice).Click();
-            driver.FindElement(_buttonChoiceByPriceExpensive).Click();
-            Assert.IsTrue(driver.FindElement(aaa, 200).Enabled);
-            Thread.Sleep(600);
-            driver.FindElement(_buttonIconAddProductBay, 30).Click();
+            driver.FindElement(_buttonChoiceByPriceExpensive).Click();           
+            WebDriverExtensions.waitforelement(driver, aaa);
+            var addProductBay2 = driver.FindElement(_buttonIconAddProductBay);
+            addProductBay2.Click();
 
             driver.FindElement(_buttonFastMenu).Click();
             driver.FindElement(_buttonListFastMenu).Click();
             driver.FindElement(_buttonIconFirstListProduct, 60).Click();
             driver.FindElement(_buttonBrendProduct).Click();
             driver.FindElement(_buttonChoiceByPrice).Click();
-            driver.FindElement(_buttonChoiceByPriceExpensive, 20).Click();
-            Assert.IsTrue(driver.FindElement(aaa, 600).Enabled);
-            Thread.Sleep(600);
-            driver.FindElement(_buttonIconAddProductBay, 30).Click();
+            driver.FindElement(_buttonChoiceByPriceExpensive, 20).Click();      
+            WebDriverExtensions.waitforelement(driver, aaa);
+            var addProductBay3 = driver.FindElement(_buttonIconAddProductBay, 30);
+            addProductBay3.Click();
 
             Thread.Sleep(300);
-            var counterAddedThirdProductsInCart = driver.FindElement(_counterAddedProductsInCart, 1000);
+            var counterAddedThirdProductsInCart = driver.FindElement(_counterAddedProductsInCart, 30);
             Assert.AreEqual("3", counterAddedThirdProductsInCart.Text, "aren't three items in cart");
             driver.FindElement(_buttonProductsInCart).Click();
             var textSumProductsInCar = driver.FindElement(_textSumProductsInCart, 30).Text;
-            Assert.IsTrue(MyAssertClass.MyAreEqualMethod(_textSum, textSumProductsInCar), "don't incorect sum product in cart");
-
+            Assert.IsTrue(MyAssert.MyIsTrue(_textSum, textSumProductsInCar), "don't incorect sum product in cart");
+           
             Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
-            ss.SaveAsFile(@"C:\Users\Serhii\source\repos\Task2RozetkaUA\Task2RozetkaUA\Screenshot.png");
+            ss.SaveAsFile(@"C:\Users\Serhii\source\repos\Task2RozetkaUA\Screenshot.png");
+       
         }
 
         [TearDown]
