@@ -115,7 +115,7 @@ namespace Task2RozetkaUA
             driver.FindElement(_buttonBrendProduct,60).Click();
             driver.FindElement(_buttonChoiceByPrice,20).Click();
             driver.FindElement(_buttonChoiceByPriceExpensive).Click();
-            WebDriverExtensions.waitforelement(driver, aaa);
+            WebDriverExtensions.waitforelement(driver, _buttonIconAddProductBay);
             var addProductBay = driver.FindElement(_buttonIconAddProductBay,30);
             addProductBay.Click();
 
@@ -125,7 +125,7 @@ namespace Task2RozetkaUA
             driver.FindElement(_buttonBrendProduct, 20).Click();
             driver.FindElement(_buttonChoiceByPrice).Click();
             driver.FindElement(_buttonChoiceByPriceExpensive).Click();           
-            WebDriverExtensions.waitforelement(driver, aaa);
+            WebDriverExtensions.waitforelement(driver, _buttonIconAddProductBay);
             var addProductBay2 = driver.FindElement(_buttonIconAddProductBay);
             addProductBay2.Click();
 
@@ -135,7 +135,7 @@ namespace Task2RozetkaUA
             driver.FindElement(_buttonBrendProduct).Click();
             driver.FindElement(_buttonChoiceByPrice).Click();
             driver.FindElement(_buttonChoiceByPriceExpensive, 20).Click();      
-            WebDriverExtensions.waitforelement(driver, aaa);
+            WebDriverExtensions.waitforelement(driver, _buttonIconAddProductBay);
             var addProductBay3 = driver.FindElement(_buttonIconAddProductBay, 30);
             addProductBay3.Click();
 
@@ -145,12 +145,11 @@ namespace Task2RozetkaUA
             driver.FindElement(_buttonProductsInCart).Click();
             var textSumProductsInCar = driver.FindElement(_textSumProductsInCart, 30).Text;
             Assert.IsTrue(MyAssert.MyIsTrue(_textSum, textSumProductsInCar), "don't incorect sum product in cart");
-           
+            Thread.Sleep(3000);
             Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
             ss.SaveAsFile(@"C:\Users\Serhii\source\repos\Task2RozetkaUA\Screenshot.png");
        
         }
-
         [TearDown]
         public void TearDown()
         {
